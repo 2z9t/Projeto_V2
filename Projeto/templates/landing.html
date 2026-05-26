@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ProENEM Lab: uma plataforma para estudar com foco no ENEM e evoluir com consistência.">
+    <link rel="canonical" href="{{ url_for('landing', _external=True) }}">
+
+    <meta property="og:site_name" content="ProENEM Lab">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:title" content="ProENEM Lab - Um novo começo">
+    <meta property="og:description" content="ProENEM Lab: uma plataforma para estudar com foco no ENEM e evoluir com consistência.">
+    <meta property="og:url" content="{{ url_for('landing', _external=True) }}">
+    <meta property="og:image" content="{{ url_for('static', filename='assets/images/lb_book.webp', _external=True) }}">
+    <meta property="og:image:alt" content="ProENEM Lab">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ProENEM Lab - Um novo começo">
+    <meta name="twitter:description" content="ProENEM Lab: uma plataforma para estudar com foco no ENEM e evoluir com consistência.">
+    <meta name="twitter:image" content="{{ url_for('static', filename='assets/images/lb_book.webp', _external=True) }}">
+
+    <link rel="icon" href="{{ url_for('static', filename='assets/images/lb_book_favicon.png') }}" type="image/png">
+
+    <link rel="preload" href="{{ url_for('static', filename='assets/fonts/Raleway-VariableFont_wght.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/presets.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+    <title>ProENEM Lab - Um novo começo</title>
+</head>
+<body id="landing_body">
+    <div id="style_section_toggle_theme_button" role="toolbar" aria-label="Tema da interface">
+        <button type="button" class="toggle_theme_button_input" id="toggle_theme_button_input_light">
+            <img src="{{ url_for('static', filename='assets/images/sun.webp') }}" alt="" width="16" height="16" aria-hidden="true">
+            <span class="visually_hidden">Tema claro</span>
+        </button>
+        <button type="button" class="toggle_theme_button_input" id="toggle_theme_button_input_dark">
+            <img src="{{ url_for('static', filename='assets/images/moon.webp') }}" alt="" width="16" height="16" aria-hidden="true">
+            <span class="visually_hidden">Tema escuro</span>
+        </button>
+        <button type="button" class="toggle_theme_button_input" id="toggle_theme_button_input_system">
+            <img src="{{ url_for('static', filename='assets/images/device.webp') }}" alt="" width="16" height="16" aria-hidden="true">
+            <span class="visually_hidden">Usar tema do dispositivo</span>
+        </button>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/global.js') }}" defer></script>
+</body>
+</html>

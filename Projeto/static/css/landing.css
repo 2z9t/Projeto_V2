@@ -1,0 +1,21 @@
+#landing_body {
+    position: relative;
+    width: 100%;
+    min-height: 100dvh;
+    font-family: Raleway, system-ui, sans-serif;
+}
+
+@media (min-width: 641px) and (max-width: 1023px) {
+    #landing_body #style_section_toggle_theme_button {
+        position: fixed;
+        top: max(0.75rem, env(safe-area-inset-top));
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
+        z-index: calc(var(--z-modal) + 1);
+    }
+
+    #landing_body {
+        padding-top: 3.25rem;
+    }
+}
