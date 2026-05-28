@@ -39,8 +39,8 @@ const USER_OK = /^[A-Za-z0-9_]{3,32}$/;
 
 const FIELD_ERROR_CLASS = "auth_field_has_error";
 
-function isRegisterPage() {
-    return document.body?.classList?.contains("auth_page_register");
+function isRegisterMode(root) {
+    return root?.classList?.contains("auth_page_register");
 }
 
 function clearError(el) {
@@ -86,7 +86,7 @@ function triggerAnimClass(el, className) {
     el.dataset.animToken = token;
 
     el.classList.remove(className);
-    void el.offsetWidth; // reflow to restart animation reliably
+    void el.offsetWidth;
     el.classList.add(className);
 
     return new Promise((resolve) => {
@@ -111,15 +111,23 @@ function setButtonBusy(btn, busy) {
 async function verify_authentication(e) {
     e.preventDefault();
 
-    const button = document.getElementById("auth_form_content_submit_button");
-    const usernameInput = document.getElementById("auth_form_content_username_input");
-    const usernameError = document.getElementById("auth_form_content_username_title_error");
-    const emailInput = document.getElementById("auth_form_content_email_input");
-    const emailError = document.getElementById("auth_form_content_email_title_error");
-    const passwordInput = document.getElementById("auth_form_content_password_input");
-    const passwordError = document.getElementById("auth_form_content_password_title_error");
-    const termsError = document.getElementById("auth_form_content_terms_error");
-    const checkbox = document.getElementById("auth_form_content_terms_checkbox");
+    const form = e.currentTarget;
+    const scope =
+        form?.closest?.("[data-auth-modal-dialog]") ||
+        form?.closest?.(".auth_modal_dialog") ||
+        document;
+
+    const byId = (id) => scope.querySelector(`#${CSS.escape(id)}`);
+
+    const button = byId("auth_form_content_submit_button");
+    const usernameInput = byId("auth_form_content_username_input");
+    const usernameError = byId("auth_form_content_username_title_error");
+    const emailInput = byId("auth_form_content_email_input");
+    const emailError = byId("auth_form_content_email_title_error");
+    const passwordInput = byId("auth_form_content_password_input");
+    const passwordError = byId("auth_form_content_password_title_error");
+    const termsError = byId("auth_form_content_terms_error");
+    const checkbox = byId("auth_form_content_terms_checkbox");
 
     clearFieldError(usernameInput, usernameError);
     clearFieldError(emailInput, emailError);
@@ -128,11 +136,11 @@ async function verify_authentication(e) {
 
     const email = emailInput?.value ?? "";
     const password = passwordInput?.value ?? "";
-    const hasUser = Boolean(usernameInput && usernameError);
+    const hasUser = Boolean(isRegisterMode(scope) && usernameInput && usernameError);
     const userOk = !hasUser || USER_OK.test(usernameInput.value.trim());
     const emailOk = EMAIL_OK.test(email);
     const passOk = isPasswordLengthValid(password);
-    const termsOk = !checkbox || checkbox.checked;
+    const termsOk = !isRegisterMode(scope) || !checkbox || checkbox.checked;
 
     const ok = userOk && emailOk && passOk && termsOk;
 
@@ -168,9 +176,9 @@ async function verify_authentication(e) {
     }
 }
 
-function initPasswordToggle() {
-    const passwordInput = document.getElementById("auth_form_content_password_input");
-    const passwordToggle = document.getElementById("auth_form_content_password_toggle");
+function initPasswordToggle(scope) {
+    const passwordInput = scope.querySelector("#auth_form_content_password_input");
+    const passwordToggle = scope.querySelector("#auth_form_content_password_toggle");
     if (!passwordInput || !passwordToggle) return;
 
     const passwordWrap = passwordInput.closest(".auth_form_content_password_wrap");
@@ -191,12 +199,12 @@ function initPasswordToggle() {
     });
 }
 
-function initPasswordStrengthMeter() {
-    if (!isRegisterPage()) return;
+function initPasswordStrengthMeter(scope) {
+    if (!isRegisterMode(scope)) return;
 
-    const passwordInput = document.getElementById("auth_form_content_password_input");
-    const passwordTitle = document.getElementById("auth_form_content_password_title");
-    const label = document.getElementById("auth_password_strength_label");
+    const passwordInput = scope.querySelector("#auth_form_content_password_input");
+    const passwordTitle = scope.querySelector("#auth_form_content_password_title");
+    const label = scope.querySelector("#auth_password_strength_label");
     if (!passwordInput || !label) return;
 
     const bucketLabel = (bucket) => {
@@ -233,8 +241,55 @@ function initPasswordStrengthMeter() {
     passwordInput.addEventListener("input", render);
 }
 
+function setAuthMode(scope, mode) {
+    if (!scope) return;
+
+    const isRegister = mode === "register";
+    scope.classList.toggle("auth_page_register", isRegister);
+
+    const submit = scope.querySelector("[data-auth-submit]");
+    const footerText = scope.querySelector("[data-auth-footer-text]");
+    const switchBtn = scope.querySelector("[data-auth-switch-mode]");
+    const passwordInput = scope.querySelector("#auth_form_content_password_input");
+    const usernameInput = scope.querySelector("#auth_form_content_username_input");
+
+    if (submit) submit.textContent = isRegister ? "Criar conta" : "Entrar";
+    if (footerText) footerText.textContent = isRegister ? "Já tem uma conta? " : "Ainda não tem uma conta? ";
+    if (switchBtn) switchBtn.textContent = isRegister ? "Entrar" : "Crie uma agora!";
+
+    if (passwordInput) passwordInput.autocomplete = isRegister ? "new-password" : "current-password";
+    if (usernameInput) usernameInput.toggleAttribute("required", isRegister);
+
+    initPasswordStrengthMeter(scope);
+}
+
+function initAuthModal(modalRoot) {
+    if (!modalRoot) return;
+    const dialog = modalRoot.querySelector("[data-auth-modal-dialog]") || modalRoot;
+    const form = dialog.querySelector("[data-auth-form]") || dialog.querySelector("#auth_form_content");
+    if (!dialog || !form) return;
+
+    form.addEventListener("submit", verify_authentication);
+    initPasswordToggle(dialog);
+
+    dialog.addEventListener("auth:set-mode", (e) => {
+        const mode = e?.detail?.mode;
+        if (mode !== "login" && mode !== "register") return;
+        setAuthMode(dialog, mode);
+    });
+
+    const switchBtn = dialog.querySelector("[data-auth-switch-mode]");
+    switchBtn?.addEventListener("click", () => {
+        const next = isRegisterMode(dialog) ? "login" : "register";
+        setAuthMode(dialog, next === "register" ? "register" : "login");
+    });
+
+    const initial = String(dialog.getAttribute("data-auth-initial-mode") ?? "login");
+    setAuthMode(dialog, initial === "register" ? "register" : "login");
+}
+
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("auth_form_content")?.addEventListener("submit", verify_authentication);
-    initPasswordToggle();
-    initPasswordStrengthMeter();
+    for (const modal of document.querySelectorAll("[data-auth-modal]")) {
+        initAuthModal(modal);
+    }
 });

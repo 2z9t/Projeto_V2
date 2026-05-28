@@ -28,7 +28,7 @@
     --error-color: #a32020;
     --input-color: #808080;
     --google-color: #15294c;
-    --on-highlight-text: #15294c;
+    --on-highlight-text: #ffffff;
     --secondary-text-color: #808080;
     --toggle-theme-a: #727272;
     --toggle-theme-b: #535353;
@@ -64,6 +64,36 @@
     --auth-intro-delay-6: 0.2s;
     --auth-intro-delay-7: 0.2s;
     --auth-intro-delay-8: 0.2s;
+    --bp-xs: 360px;
+    --bp-sm: 480px;
+    --bp-md: 640px;
+    --bp-lg: 1024px;
+    --bp-xl: 1280px;
+    --page-pad-inline: clamp(0.75rem, 3vw, 2rem);
+    --touch-target-min: 2.75rem;
+}
+
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    height: 100%;
+    overflow-x: clip;
+}
+
+html.auth_modal_open {
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+html.auth_modal_open body {
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+html.auth_modal_open #style_section_toggle_theme_button {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -122,6 +152,10 @@ html[data-theme="dark"] {
 }
 
 body {
+    width: 100%;
+    min-height: 100%;
+    min-height: 100dvh;
+    overflow-x: clip;
     background-color: var(--background-color);
     color: var(--text-color);
 }
@@ -235,6 +269,13 @@ body {
         padding: 0.25rem 0.5rem;
         gap: 0.5rem;
         justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    #style_section_toggle_theme_button > * {
+        width: var(--touch-target-min);
+        height: var(--touch-target-min);
     }
 }
 

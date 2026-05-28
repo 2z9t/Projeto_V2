@@ -1,0 +1,105 @@
+<div class="auth_modal" data-auth-modal {% if not auth_modal_open %}hidden{% endif %}>
+    <div class="auth_modal_overlay" data-auth-modal-close aria-hidden="true"></div>
+    <div class="auth_modal_dialog" role="dialog" aria-modal="true" aria-label="Autenticação" data-auth-modal-dialog data-auth-initial-mode="{{ auth_modal_mode or 'login' }}" tabindex="-1">
+        <div id="auth_form_container" aria-label="Formulário de autenticação">
+            <main id="auth_form_main">
+            <form novalidate id="auth_form_content" data-auth-form>
+                <div id="auth_form_content_header_container">
+                    <h1 id="auth_form_content_header_title">Estude como se o <span class="highlighted_text">ENEM</span> fosse amanhã</h1>
+                </div>
+                <div id="auth_form_content_container">
+                    <div class="auth_form_content_input_container" id="auth_form_content_username_container" data-auth-register-only>
+                        <div class="auth_form_content_input_title_container">
+                            <label class="auth_form_content_input_title" id="auth_form_content_username_title" for="auth_form_content_username_input">Apelido</label>
+                            <span class="auth_form_content_input_title_error" id="auth_form_content_username_title_error"></span>
+                        </div>
+                        <input type="text" class="auth_form_content_input" id="auth_form_content_username_input" name="username" autocomplete="off" inputmode="text" minlength="3" maxlength="32" title="Letras, números ou sublinhado, entre 3 e 32 caracteres.">
+                    </div>
+                    <div class="auth_form_content_input_container" id="auth_form_content_email_container">
+                        <div class="auth_form_content_input_title_container">
+                            <label class="auth_form_content_input_title" id="auth_form_content_email_title" for="auth_form_content_email_input">Email</label>
+                            <span class="auth_form_content_input_title_error" id="auth_form_content_email_title_error"></span>
+                        </div>
+                        <input type="email" class="auth_form_content_input" autocomplete="email" inputmode="email" id="auth_form_content_email_input" required>
+                    </div>
+                    <div class="auth_form_content_input_container" id="auth_form_content_password_container">
+                        <div class="auth_form_content_input_title_container">
+                            <label class="auth_form_content_input_title" id="auth_form_content_password_title" for="auth_form_content_password_input">Senha</label>
+                            <span class="auth_form_content_input_title_error" id="auth_form_content_password_title_error"></span>
+                        </div>
+                        <div class="auth_form_content_password_wrap">
+                            <input type="password" class="auth_form_content_input" autocomplete="current-password" id="auth_form_content_password_input" required>
+                            <button type="button" class="auth_form_content_password_toggle" id="auth_form_content_password_toggle" aria-label="Mostrar senha digitada" aria-pressed="false">
+                                <svg class="auth_form_content_password_toggle_svg" id="auth_form_content_password_toggle_icon_closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                                    <ellipse cx="12" cy="12" rx="9" ry="5.25" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+                                    <path d="M4 12.25h16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+                                </svg>
+                                <svg class="auth_form_content_password_toggle_svg" id="auth_form_content_password_toggle_icon_open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true">
+                                    <ellipse cx="12" cy="12" rx="9" ry="5.25" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>
+                                    <circle cx="12" cy="12" r="2.35" fill="currentColor"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="auth_password_strength" id="auth_password_strength" aria-label="Indicador de força da senha" aria-live="polite" data-auth-register-only>
+                            <div class="auth_password_strength_row">
+                                <span class="auth_password_strength_label" id="auth_password_strength_label">Força: fraca</span>
+                                <span class="auth_form_content_password_hint" id="auth_form_content_password_hint">Deve ter pelo menos 8 caracteres</span>
+                            </div>
+                        </div>
+
+                        <div class="auth_form_content_password_hint_row" id="auth_form_content_password_hint_row" data-auth-login-only>
+                            <a href="#" class="highlighted_text auth_form_content_auth_aux_link" id="auth_form_content_privacy_policy_link">Políticas de privacidade</a>
+                            <a href="#" class="highlighted_text auth_form_content_password_forgot_link" id="auth_form_content_password_forgot_link">Esqueci minha senha</a>
+                        </div>
+                    </div>
+
+                    <div class="auth_form_content_terms_container" id="auth_form_content_terms_container" data-auth-register-only>
+                        <label for="auth_form_content_terms_checkbox" id="auth_form_content_terms_label">
+                            <span id="auth_form_content_terms_text">Eu li e concordo plenamente com os <a href="#" class="highlighted_text">termos de uso</a> e <a href="#" class="highlighted_text">políticas de privacidade</a>.</span>
+                        </label>
+                        <input type="checkbox" id="auth_form_content_terms_checkbox" aria-describedby="auth_form_content_terms_text auth_form_content_terms_error">
+                        <svg id="auth_form_content_terms_checkmark" xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-check" viewBox="0 0 16 16" aria-hidden="true">
+                            <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                        </svg>
+                        <div class="auth_form_content_terms_error_slot">
+                            <p class="auth_form_content_terms_error" id="auth_form_content_terms_error" role="alert" aria-live="polite"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="auth_form_content_footer_container">
+                    <button type="submit" class="auth_form_content_footer_button" id="auth_form_content_submit_button" data-auth-submit>Entrar</button>
+
+                    <div class="auth_form_content_footer_divider" aria-hidden="true" data-auth-login-only>
+                        <span class="auth_form_content_footer_divider_line" aria-hidden="true"></span>
+                        <span class="auth_form_content_footer_divider_text">ou</span>
+                        <span class="auth_form_content_footer_divider_line" aria-hidden="true"></span>
+                    </div>
+
+                    <button type="button" class="auth_form_content_footer_button" id="auth_form_content_submit_google_button" data-auth-login-only>
+                        <div id="auth_form_content_submit_google_button_icon"></div>
+                        <span id="auth_form_content_submit_google_button_text">Entrar com Google</span>
+                    </button>
+
+                    <div id="auth_form_content_footer_text_container">
+                        <span id="auth_form_content_footer_text" data-auth-footer-text>Ainda não tem uma conta? </span>
+                        <button type="button" class="highlighted_text" id="auth_form_content_footer_text_link" data-auth-switch-mode>Crie uma agora!</button>
+                    </div>
+                </div>
+            </form>
+            </main>
+        </div>
+
+        <div id="auth_style_container" aria-hidden="true" role="presentation">
+            <div id="auth_style_container_custom_layer">
+                <div id="auth_style_section_first_content">
+                    <div class="auth_style_section_first" id="auth_style_section_first_layer_1"></div>
+                    <div class="auth_style_section_first" id="auth_style_section_first_layer_2"></div>
+                    <div class="auth_style_section_first" id="auth_style_section_first_layer_3"></div>
+                </div>
+            </div>
+        </div>
+        <span id="auth_style_section_title">Pro<span class="highlighted_text">ENEM</span> Lab</span>
+    </div>
+</div>

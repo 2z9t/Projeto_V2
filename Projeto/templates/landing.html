@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="description" content="ProENEM Lab: uma plataforma para estudar com foco no ENEM e evoluir com consistência.">
     <link rel="canonical" href="{{ url_for('landing', _external=True) }}">
 
@@ -25,9 +25,157 @@
     <link rel="preload" href="{{ url_for('static', filename='assets/fonts/Raleway-VariableFont_wght.woff2') }}" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/presets.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
     <title>ProENEM Lab - Um novo começo</title>
 </head>
 <body id="landing_body">
+    {% from "components/landing_nav_mega_menu.html" import landing_nav_mega_menu %}
+    <header class="landing_header" role="banner">
+        <div class="landing_header_watermark" aria-hidden="true">
+            <img src="{{ url_for('static', filename='assets/images/pro_enem_lab_logo.png') }}" alt="">
+        </div>
+        <div class="landing_header_container">
+            <a class="landing_header_logo" href="{{ url_for('landing') }}" aria-label="ProENEM Lab - Página inicial">
+                <img class="landing_header_logo_img" src="{{ url_for('static', filename='assets/images/lb_book_favicon.png') }}" alt="" width="40" height="40">
+            </a>
+
+            <button
+                type="button"
+                class="landing_header_menu_toggle"
+                data-nav-menu-toggle
+                aria-expanded="false"
+                aria-controls="landing_header_nav"
+                aria-label="Abrir menu de navegação"
+            >
+                <span class="landing_header_menu_toggle_box" aria-hidden="true">
+                    <span class="landing_header_menu_toggle_bar"></span>
+                    <span class="landing_header_menu_toggle_bar"></span>
+                    <span class="landing_header_menu_toggle_bar"></span>
+                </span>
+            </button>
+
+            <div class="landing_header_actions" aria-label="Ações rápidas">
+                <a class="landing_header_action_btn landing_header_action_btn_ghost" href="#ajuda">Ajuda</a>
+                <button type="button" class="landing_header_action_btn landing_header_action_btn_primary" data-open-auth-modal data-auth-open-mode="login">
+                    Laboratório
+                </button>
+            </div>
+        </div>
+
+        <nav class="landing_header_nav" id="landing_header_nav" aria-label="Navegação principal">
+                <a class="landing_header_nav_link is-active" href="#inicio">Início</a>
+
+                <div class="landing_header_nav_dropdown" data-nav-dropdown>
+                    <button type="button" class="landing_header_nav_trigger" aria-expanded="false" aria-haspopup="true" aria-controls="nav_menu_recursos" id="nav_trigger_recursos">
+                        Recursos
+                        <span class="landing_header_nav_caret" aria-hidden="true"></span>
+                    </button>
+                    {{ landing_nav_mega_menu(
+                        'nav_menu_recursos',
+                        'nav_trigger_recursos',
+                        [
+                            {'href': '#recursos', 'label': 'Visão geral', 'desc': 'Acesse tudo em um só lugar', 'icon': 'grid'},
+                            {'href': '#recursos-materiais', 'label': 'Materiais', 'desc': 'Apostilas e conteúdos organizados', 'icon': 'book'},
+                            {'href': '#recursos-simulados', 'label': 'Simulados', 'desc': 'Pratique no formato ENEM', 'icon': 'clipboard'},
+                            {'href': '#recursos', 'label': 'Cronograma', 'desc': 'Organize sua semana de estudos', 'icon': 'calendar'},
+                            {'href': '#recursos', 'label': 'Videoaulas', 'desc': 'Aulas objetivas por disciplina', 'icon': 'play'},
+                            {'href': '#recursos', 'label': 'Resumos', 'desc': 'Revisão rápida antes da prova', 'icon': 'file'}
+                        ],
+                        '#recursos',
+                        'Ver todos os recursos',
+                        'Monte um plano de estudos com foco no ENEM',
+                        '#recursos',
+                        'Explorar recursos',
+                        'assets/images/nav_dropdown_recursos.png'
+                    ) }}
+                </div>
+
+                <div class="landing_header_nav_dropdown" data-nav-dropdown>
+                    <button type="button" class="landing_header_nav_trigger" aria-expanded="false" aria-haspopup="true" aria-controls="nav_menu_gamificacao" id="nav_trigger_gamificacao">
+                        Gamificação
+                        <span class="landing_header_nav_caret" aria-hidden="true"></span>
+                    </button>
+                    {{ landing_nav_mega_menu(
+                        'nav_menu_gamificacao',
+                        'nav_trigger_gamificacao',
+                        [
+                            {'href': '#gamificacao', 'label': 'Visão geral', 'desc': 'Veja seu progresso completo', 'icon': 'grid'},
+                            {'href': '#gamificacao-conquistas', 'label': 'Conquistas', 'desc': 'Desbloqueie recompensas', 'icon': 'trophy'},
+                            {'href': '#gamificacao-ranking', 'label': 'Ranking', 'desc': 'Compare seu desempenho', 'icon': 'chart'},
+                            {'href': '#gamificacao', 'label': 'Metas diárias', 'desc': 'Mantenha consistência nos estudos', 'icon': 'target'},
+                            {'href': '#gamificacao', 'label': 'Desafios', 'desc': 'Complete missões semanais', 'icon': 'bolt'},
+                            {'href': '#gamificacao', 'label': 'Medalhas', 'desc': 'Colecione marcos da jornada', 'icon': 'medal'}
+                        ],
+                        '#gamificacao',
+                        'Ver gamificação completa',
+                        'Transforme estudo em hábito com metas e recompensas',
+                        '#gamificacao',
+                        'Começar a evoluir',
+                        'assets/images/nav_dropdown_gamificacao.png'
+                    ) }}
+                </div>
+
+                <div class="landing_header_nav_dropdown" data-nav-dropdown>
+                    <button type="button" class="landing_header_nav_trigger" aria-expanded="false" aria-haspopup="true" aria-controls="nav_menu_roadmap" id="nav_trigger_roadmap">
+                        Roadmap
+                        <span class="landing_header_nav_caret" aria-hidden="true"></span>
+                    </button>
+                    {{ landing_nav_mega_menu(
+                        'nav_menu_roadmap',
+                        'nav_trigger_roadmap',
+                        [
+                            {'href': '#roadmap', 'label': 'Visão geral', 'desc': 'Linha do tempo do produto', 'icon': 'map'},
+                            {'href': '#roadmap-versoes', 'label': 'Versões', 'desc': 'Histórico de lançamentos', 'icon': 'layers'},
+                            {'href': '#roadmap-novidades', 'label': 'Novidades', 'desc': 'Últimas atualizações', 'icon': 'sparkle'},
+                            {'href': '#roadmap', 'label': 'Em desenvolvimento', 'desc': 'Recursos que estão chegando', 'icon': 'code'},
+                            {'href': '#roadmap', 'label': 'Sugestões', 'desc': 'Envie ideias para o laboratório', 'icon': 'help'},
+                            {'href': '#roadmap', 'label': 'Programa beta', 'desc': 'Teste funcionalidades antes', 'icon': 'flask'}
+                        ],
+                        '#roadmap',
+                        'Ver roadmap completo',
+                        'Acompanhe o que vem por aí no ProENEM Lab',
+                        '#roadmap',
+                        'Ver novidades',
+                        'assets/images/nav_dropdown_roadmap.png'
+                    ) }}
+                </div>
+
+                <div class="landing_header_nav_dropdown" data-nav-dropdown>
+                    <button type="button" class="landing_header_nav_trigger" aria-expanded="false" aria-haspopup="true" aria-controls="nav_menu_buscar" id="nav_trigger_buscar">
+                        Buscar
+                        <span class="landing_header_nav_caret" aria-hidden="true"></span>
+                    </button>
+                    {{ landing_nav_mega_menu(
+                        'nav_menu_buscar',
+                        'nav_trigger_buscar',
+                        [
+                            {'href': '#buscar', 'label': 'Visão geral', 'desc': 'Busca unificada da plataforma', 'icon': 'search'},
+                            {'href': '#buscar-questoes', 'label': 'Questões', 'desc': 'Filtre por tema e dificuldade', 'icon': 'clipboard'},
+                            {'href': '#buscar-conteudos', 'label': 'Conteúdos', 'desc': 'Aulas, resumos e materiais', 'icon': 'book'},
+                            {'href': '#buscar', 'label': 'Por disciplina', 'desc': 'Encontre tópicos específicos', 'icon': 'grid'},
+                            {'href': '#buscar', 'label': 'Por ano', 'desc': 'Provas e questões por edição', 'icon': 'calendar'},
+                            {'href': '#buscar', 'label': 'Favoritos', 'desc': 'Acesse o que você salvou', 'icon': 'bookmark'}
+                        ],
+                        '#buscar',
+                        'Ver busca completa',
+                        'Encontre questões e conteúdos em segundos',
+                        '#buscar',
+                        'Ir para busca',
+                        'assets/images/nav_dropdown_buscar.png'
+                    ) }}
+                </div>
+
+            <div class="landing_header_nav_actions" aria-label="Ações rápidas">
+                <a class="landing_header_action_btn landing_header_action_btn_ghost" href="#ajuda">Ajuda</a>
+                <button type="button" class="landing_header_action_btn landing_header_action_btn_primary" data-open-auth-modal data-auth-open-mode="login">
+                    Laboratório
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="landing_header_nav_backdrop" data-nav-backdrop hidden></div>
+
     <div id="style_section_toggle_theme_button" role="toolbar" aria-label="Tema da interface">
         <button type="button" class="toggle_theme_button_input" id="toggle_theme_button_input_light">
             <img src="{{ url_for('static', filename='assets/images/sun.webp') }}" alt="" width="16" height="16" aria-hidden="true">
@@ -43,6 +191,28 @@
         </button>
     </div>
 
+    <main class="landing_main" id="inicio">
+        <!-- Conteúdo da landing virá aqui -->
+        <section id="recursos"></section>
+        <section id="recursos-materiais"></section>
+        <section id="recursos-simulados"></section>
+        <section id="gamificacao"></section>
+        <section id="gamificacao-conquistas"></section>
+        <section id="gamificacao-ranking"></section>
+        <section id="roadmap"></section>
+        <section id="roadmap-versoes"></section>
+        <section id="roadmap-novidades"></section>
+        <section id="buscar"></section>
+        <section id="buscar-questoes"></section>
+        <section id="buscar-conteudos"></section>
+        <section id="ajuda"></section>
+    </main>
+
+    {% include "components/auth_modal.html" %}
+
     <script src="{{ url_for('static', filename='js/global.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/landing_header.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/auth.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/auth_modal.js') }}" defer></script>
 </body>
 </html>

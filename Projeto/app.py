@@ -1,22 +1,15 @@
-from flask import Flask, render_template, url_for
+import os
+
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
 
-
-@app.route('/')
+@app.route("/")
 def landing():
-    return render_template('landing.html')
-
-@app.route('/cadastrar')
-def cadastrar():
-    return render_template('cadastrar.html')
-
-@app.route('/entrar')
-def entrar():
-    return render_template('entrar.html')
+    return render_template("landing.html")
 
 
-
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    debug = os.environ.get("FLASK_DEBUG", "1") == "1"
+    app.run(debug=debug, port=int(os.environ.get("PORT", 5000)))

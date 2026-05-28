@@ -42,7 +42,6 @@ function toggleTheme(theme) {
     syncThemeToggleFromStorage();
 
     if (themeSwitchTimeoutId) window.clearTimeout(themeSwitchTimeoutId);
-    // Keep it long enough to suppress hover/focus animations after click.
     themeSwitchTimeoutId = window.setTimeout(() => {
         root.classList.remove("theme_is_switching");
         themeSwitchTimeoutId = null;
@@ -57,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
     byId(THEME_TOGGLE_IDS[1])?.addEventListener("click", () => toggleTheme("dark"));
     byId(THEME_TOGGLE_IDS[2])?.addEventListener("click", () => toggleTheme("system"));
 
-    // After the initial paint, mark intro as done so it won't replay.
     requestAnimationFrame(() => {
         requestAnimationFrame(() => document.documentElement.classList.add("theme_intro_done"));
     });
