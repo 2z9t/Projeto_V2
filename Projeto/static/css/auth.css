@@ -50,17 +50,6 @@
     }
 }
 
-@keyframes fade_in_toggle_theme_button_auth {
-    0% {
-        opacity: 0;
-        transform: translateY(-100%);
-    }
-    100% {
-        opacity: 0.86;
-        transform: translateY(0);
-    }
-}
-
 @keyframes fade_in_out_validation_auth {
     0% {
         opacity: 0;
@@ -141,6 +130,7 @@
     --auth-art-2: url("../assets/images/layer_3_l.webp");
     --auth-art-3: url("../assets/images/layer_2_l.webp");
     --auth-style-background: url("../assets/images/main_style_background_d.webp");
+    --auth-modal-background: url("../assets/images/auth_modal_background_dark.png");
     --auth-modal-ratio-w: 3;
     --auth-modal-ratio-h: 4;
     --auth-modal-inline-pad: clamp(0.65rem, 3vw, 1.25rem);
@@ -228,6 +218,7 @@ html[data-theme="light"] {
     --auth-art-2: url("../assets/images/layer_3_l.webp");
     --auth-art-3: url("../assets/images/layer_2_l.webp");
     --auth-style-background: url("../assets/images/main_style_background_d.webp");
+    --auth-modal-background: url("../assets/images/auth_modal_background_light.png");
 }
 
 html[data-theme="dark"] {
@@ -235,6 +226,7 @@ html[data-theme="dark"] {
     --auth-art-2: url("../assets/images/layer_2_d.webp");
     --auth-art-3: url("../assets/images/layer_3_d.webp");
     --auth-style-background: url("../assets/images/main_style_background_l.webp");
+    --auth-modal-background: url("../assets/images/auth_modal_background_dark.png");
 }
 
 @media (prefers-color-scheme: dark) {
@@ -243,6 +235,7 @@ html[data-theme="dark"] {
         --auth-art-2: url("../assets/images/layer_2_d.webp");
         --auth-art-3: url("../assets/images/layer_3_d.webp");
         --auth-style-background: url("../assets/images/main_style_background_l.webp");
+        --auth-modal-background: url("../assets/images/auth_modal_background_dark.png");
     }
 
     #auth_form_content_header_title,
@@ -251,44 +244,9 @@ html[data-theme="dark"] {
     }
 }
 
-body.auth_page {
-    width: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    overflow-y: auto;
-    font-family: var(--auth-font);
-}
-
-@media (max-width: 1024px) {
-    body.auth_page {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        overflow-y: auto;
-    }
-
-    #auth_form_container {
-        flex: 1 1 auto;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        min-height: 100dvh;
-    }
-
-    #auth_form_content {
-        max-height: none;
-        overflow-y: visible;
-    }
-}
-
-@media (min-width: 1024px) and (orientation: portrait) {
-    body.auth_page {
-        grid-template-columns: minmax(0, 1fr);
-        grid-template-rows: 1fr;
-        grid-template-areas: "div";
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme]) {
+        --auth-modal-background: url("../assets/images/auth_modal_background_light.png");
     }
 }
 
@@ -316,22 +274,6 @@ body.auth_page {
     min-width: 0;
     width: 100%;
     margin: 0;
-}
-
-@media (min-width: 641px) and (max-width: 1023px) {
-    #auth_form_container {
-        padding-top: max(3.75rem, calc(env(safe-area-inset-top) + 3.25rem));
-    }
-
-    #auth_form_container #style_section_toggle_theme_button {
-        position: fixed;
-        top: max(0.75rem, env(safe-area-inset-top));
-        left: 50%;
-        right: auto;
-        transform: translateX(-50%);
-        align-self: center;
-        z-index: calc(var(--z-modal) + 1);
-    }
 }
 
 #auth_form_content {
@@ -416,8 +358,7 @@ body.auth_page {
 }
 
 @media (max-width: 480px) {
-    html,
-    body.auth_page {
+    html {
         overflow-x: hidden;
     }
 
@@ -1032,14 +973,6 @@ body.auth_page {
     }
 }
 
-@media (max-height: 767px) {
-    body.auth_page {
-        grid-template-columns: minmax(0, 1fr);
-        grid-template-rows: 1fr;
-        grid-template-areas: "div";
-    }
-}
-
 #auth_style_container_custom_layer {
     position: relative;
     width: 100%;
@@ -1140,26 +1073,7 @@ html[data-theme="light"] .auth_form_content_input_title {
     color: var(--error-color);
 }
 
-html[data-theme="dark"] body.auth_page::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--background-color);
-    z-index: var(--z-underlay);
-}
-
-/* ---------- Modal layout wrapper (auth pages as modal) ---------- */
-body.auth_page {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: max(1rem, env(safe-area-inset-top))
-        max(1rem, env(safe-area-inset-right))
-        max(1rem, env(safe-area-inset-bottom))
-        max(1rem, env(safe-area-inset-left));
-}
-
+/* ---------- Modal layout ---------- */
 .auth_modal_overlay {
     position: fixed;
     inset: 0;
@@ -1214,7 +1128,7 @@ body.auth_page {
     justify-items: center;
     align-items: center;
     background-color: var(--background-color);
-    background-image: var(--auth-style-background);
+    background-image: var(--auth-modal-background);
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -1627,7 +1541,6 @@ body.auth_page {
     display: none !important;
 }
 
-/* Support old "body.auth_page_register" rules when in modal. */
 .auth_modal_dialog.auth_page_register #auth_form_content_terms_container {
     row-gap: 0;
 }
@@ -1730,106 +1643,4 @@ body.auth_page {
 .auth_modal_dialog.auth_page_register #auth_form_content_password_input:focus-visible {
     outline-color: var(--password-strength-color, var(--highlight-color));
 }
-body.auth_page_register #auth_form_content_terms_container {
-    row-gap: 0;
-}
 
-body.auth_page_register #auth_form_content_footer_container {
-    margin-top: -1rem;
-}
-
-@media (max-width: 360px), (max-width: 767px) and (max-height: 700px) {
-    body.auth_page_register #auth_form_content_footer_container {
-        margin-top: -0.375rem;
-    }
-}
-
-@media (min-width: 641px) {
-    body.auth_page_register #auth_form_content {
-        max-height: min(94dvh, 54rem);
-        gap: clamp(0.7rem, 2vw, 1rem);
-    }
-
-    body.auth_page_register #auth_form_content_container {
-        gap: clamp(0.6rem, 1.5vw, 0.9rem);
-    }
-
-    body.auth_page_register .auth_form_content_input_container {
-        gap: 0.55rem;
-    }
-
-    body.auth_page_register #auth_form_content_footer_container {
-        margin-top: calc(-1 * clamp(0.7rem, 2vw, 1rem));
-    }
-}
-
-@media (min-width: 1024px) {
-    body.auth_page_register #auth_form_content {
-        overflow-y: auto;
-        scrollbar-gutter: stable;
-        scrollbar-color: var(--placeholder-color) transparent;
-        scrollbar-width: thin;
-    }
-
-    body.auth_page_register #auth_form_content::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    body.auth_page_register #auth_form_content::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    body.auth_page_register #auth_form_content::-webkit-scrollbar-thumb {
-        background-color: color-mix(in srgb, var(--placeholder-color) 75%, transparent);
-        border-radius: var(--auth-radius-pill);
-    }
-
-    body.auth_page_register #auth_form_content::-webkit-scrollbar-thumb:hover {
-        background-color: var(--placeholder-color);
-    }
-}
-
-body.auth_page_register #auth_form_content_username_container .auth_form_content_input {
-    text-transform: none;
-}
-
-body.auth_page_register .auth_password_strength {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0.4rem;
-    width: 100%;
-    margin-top: 0.15rem;
-    animation: fade_in_rest_auth var(--auth-intro-duration) var(--auth-intro-easing) var(--auth-intro-delay-3) both;
-}
-
-body.auth_page_register .auth_password_strength_row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.75rem;
-    width: 100%;
-}
-
-body.auth_page_register .auth_password_strength_label {
-    font-weight: 500;
-    font-size: clamp(0.75rem, 2vw, 0.85rem);
-    line-height: 1.2;
-    color: var(--placeholder-color);
-    opacity: 0.95;
-}
-
-body.auth_page_register .auth_password_strength_row .auth_form_content_password_hint {
-    flex: 0 0 auto;
-    margin-inline-start: auto;
-    text-align: end;
-    white-space: nowrap;
-}
-
-body.auth_page_register #auth_form_content_password_input:focus {
-    border-color: var(--password-strength-color, var(--highlight-color));
-}
-
-body.auth_page_register #auth_form_content_password_input:focus-visible {
-    outline-color: var(--password-strength-color, var(--highlight-color));
-}

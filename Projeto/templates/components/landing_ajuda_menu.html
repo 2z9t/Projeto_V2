@@ -1,0 +1,50 @@
+{% from "components/landing_nav_mega_menu.html" import nav_icon %}
+
+{% macro landing_ajuda_menu(menu_id, trigger_id) %}
+<div class="landing_header_nav_menu landing_header_ajuda_menu" id="{{ menu_id }}" role="menu" aria-labelledby="{{ trigger_id }}">
+    <div class="landing_header_nav_menu_inner landing_header_ajuda_menu_inner">
+        <div class="landing_header_nav_menu_panel landing_header_ajuda_menu_panel">
+            <ul class="landing_header_nav_menu_list landing_header_nav_menu_list--stack" role="none">
+                <li class="landing_header_nav_menu_item" role="none">
+                    <a class="landing_header_nav_menu_link" role="menuitem" href="#privacidade">
+                        <span class="landing_header_nav_menu_icon">{{ nav_icon('shield') }}</span>
+                        <span class="landing_header_nav_menu_link_text">
+                            <span class="landing_header_nav_menu_link_label">Políticas de Privacidade</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="landing_header_nav_menu_item" role="none">
+                    <a class="landing_header_nav_menu_link" role="menuitem" href="#termos">
+                        <span class="landing_header_nav_menu_icon">{{ nav_icon('file') }}</span>
+                        <span class="landing_header_nav_menu_link_text">
+                            <span class="landing_header_nav_menu_link_label">Termos de Uso</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="landing_header_nav_menu_item" role="none">
+                    <button
+                        type="button"
+                        class="landing_header_nav_menu_link landing_header_nav_menu_link_btn"
+                        role="menuitem"
+                        data-theme-toggle
+                    >
+                        <span class="landing_header_nav_menu_icon">{{ nav_icon('theme') }}</span>
+                        <span class="landing_header_nav_menu_link_text">
+                            <span class="landing_header_nav_menu_link_label">Trocar Tema</span>
+                        </span>
+                    </button>
+                </li>
+                <li class="landing_header_nav_menu_item" role="none">
+                    <a class="landing_header_nav_menu_link" role="menuitem" href="#suporte">
+                        <span class="landing_header_nav_menu_icon">{{ nav_icon('help') }}</span>
+                        <span class="landing_header_nav_menu_link_text">
+                            <span class="landing_header_nav_menu_link_label">Suporte em Geral</span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <p class="landing_header_ajuda_menu_copyright">© ProENEM Lab 2026</p>
+        </div>
+    </div>
+</div>
+{% endmacro %}

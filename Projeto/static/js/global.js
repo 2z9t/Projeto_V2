@@ -1,9 +1,11 @@
 const THEME_KEY = "auth_theme";
-const THEME_TOGGLE_IDS = [
-    "toggle_theme_button_input_light",
-    "toggle_theme_button_input_dark",
-    "toggle_theme_button_input_system",
-];
+const THEME_TOGGLE_SELECTOR = "[data-theme-toggle]";
+
+const THEME_LABELS = {
+    system: "Tema: dispositivo",
+    light: "Tema: claro",
+    dark: "Tema: escuro",
+};
 
 (function applySavedTheme() {
     const saved = localStorage.getItem(THEME_KEY);
@@ -12,26 +14,24 @@ const THEME_TOGGLE_IDS = [
     }
 })();
 
-function syncThemeToggleFromStorage() {
+function getCurrentTheme() {
     const saved = localStorage.getItem(THEME_KEY);
-    const active =
-        saved === "light"
-            ? THEME_TOGGLE_IDS[0]
-            : saved === "dark"
-              ? THEME_TOGGLE_IDS[1]
-              : THEME_TOGGLE_IDS[2];
+    if (saved === "light" || saved === "dark") return saved;
+    return "system";
+}
 
-    for (const id of THEME_TOGGLE_IDS) {
-        document.getElementById(id)?.removeAttribute("aria-current");
-    }
-    document.getElementById(active)?.setAttribute("aria-current", "true");
+function getNextTheme(current) {
+    if (current === "system") return "light";
+    if (current === "light") return "dark";
+    return "light";
 }
 
 let themeSwitchTimeoutId = null;
 
-function toggleTheme(theme) {
+function applyTheme(theme) {
     const root = document.documentElement;
     root.classList.add("theme_is_switching");
+
     if (theme === "system") {
         root.removeAttribute("data-theme");
         localStorage.removeItem(THEME_KEY);
@@ -39,7 +39,8 @@ function toggleTheme(theme) {
         root.setAttribute("data-theme", theme);
         localStorage.setItem(THEME_KEY, theme);
     }
-    syncThemeToggleFromStorage();
+
+    syncThemeToggleUI();
 
     if (themeSwitchTimeoutId) window.clearTimeout(themeSwitchTimeoutId);
     themeSwitchTimeoutId = window.setTimeout(() => {
@@ -48,16 +49,32 @@ function toggleTheme(theme) {
     }, 250);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    syncThemeToggleFromStorage();
+function syncThemeToggleUI() {
+    const theme = getCurrentTheme();
 
-    const byId = (id) => document.getElementById(id);
-    byId(THEME_TOGGLE_IDS[0])?.addEventListener("click", () => toggleTheme("light"));
-    byId(THEME_TOGGLE_IDS[1])?.addEventListener("click", () => toggleTheme("dark"));
-    byId(THEME_TOGGLE_IDS[2])?.addEventListener("click", () => toggleTheme("system"));
+    for (const button of document.querySelectorAll(THEME_TOGGLE_SELECTOR)) {
+        const iconSrc = button.getAttribute(`data-icon-${theme}`);
+        const icon = button.querySelector(".toggle_theme_button_icon");
+        const label = button.querySelector(".toggle_theme_button_label");
+
+        button.setAttribute("data-theme-mode", theme);
+        button.setAttribute("aria-current", "true");
+
+        if (icon && iconSrc) icon.src = iconSrc;
+        if (label) label.textContent = THEME_LABELS[theme] || THEME_LABELS.system;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    syncThemeToggleUI();
+
+    for (const button of document.querySelectorAll(THEME_TOGGLE_SELECTOR)) {
+        button.addEventListener("click", () => {
+            applyTheme(getNextTheme(getCurrentTheme()));
+        });
+    }
 
     requestAnimationFrame(() => {
         requestAnimationFrame(() => document.documentElement.classList.add("theme_intro_done"));
     });
 });
-

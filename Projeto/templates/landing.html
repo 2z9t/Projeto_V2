@@ -30,13 +30,16 @@
 </head>
 <body id="landing_body">
     {% from "components/landing_nav_mega_menu.html" import landing_nav_mega_menu %}
+    {% from "components/landing_ajuda_menu.html" import landing_ajuda_menu %}
     <header class="landing_header" role="banner">
         <div class="landing_header_watermark" aria-hidden="true">
-            <img src="{{ url_for('static', filename='assets/images/pro_enem_lab_logo.png') }}" alt="">
+            <img class="landing_header_watermark_img landing_header_watermark_img--theme-light" src="{{ url_for('static', filename='assets/images/pro_enem_lab_logo_light.png') }}" alt="">
+            <img class="landing_header_watermark_img landing_header_watermark_img--theme-dark" src="{{ url_for('static', filename='assets/images/pro_enem_lab_logo.png') }}" alt="">
         </div>
         <div class="landing_header_container">
             <a class="landing_header_logo" href="{{ url_for('landing') }}" aria-label="ProENEM Lab - Página inicial">
-                <img class="landing_header_logo_img" src="{{ url_for('static', filename='assets/images/lb_book_favicon.png') }}" alt="" width="40" height="40">
+                <img class="landing_header_logo_img landing_header_logo_img--theme-light" src="{{ url_for('static', filename='assets/images/db_book.webp') }}" alt="ProENEM Lab" width="66" height="66">
+                <img class="landing_header_logo_img landing_header_logo_img--theme-dark" src="{{ url_for('static', filename='assets/images/lb_book.webp') }}" alt="ProENEM Lab" width="66" height="66">
             </a>
 
             <button
@@ -55,7 +58,20 @@
             </button>
 
             <div class="landing_header_actions" aria-label="Ações rápidas">
-                <a class="landing_header_action_btn landing_header_action_btn_ghost" href="#ajuda">Ajuda</a>
+                <div class="landing_header_actions_dropdown landing_header_nav_dropdown" data-nav-dropdown>
+                    <button
+                        type="button"
+                        class="landing_header_action_btn landing_header_action_btn_ghost landing_header_nav_trigger landing_header_actions_dropdown_trigger"
+                        id="nav_trigger_ajuda"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        aria-controls="nav_menu_ajuda"
+                    >
+                        Ajuda
+                        <span class="landing_header_nav_caret" aria-hidden="true"></span>
+                    </button>
+                    {{ landing_ajuda_menu('nav_menu_ajuda', 'nav_trigger_ajuda') }}
+                </div>
                 <button type="button" class="landing_header_action_btn landing_header_action_btn_primary" data-open-auth-modal data-auth-open-mode="login">
                     Laboratório
                 </button>
@@ -81,8 +97,6 @@
                             {'href': '#recursos', 'label': 'Videoaulas', 'desc': 'Aulas objetivas por disciplina', 'icon': 'play'},
                             {'href': '#recursos', 'label': 'Resumos', 'desc': 'Revisão rápida antes da prova', 'icon': 'file'}
                         ],
-                        '#recursos',
-                        'Ver todos os recursos',
                         'Monte um plano de estudos com foco no ENEM',
                         '#recursos',
                         'Explorar recursos',
@@ -106,8 +120,6 @@
                             {'href': '#gamificacao', 'label': 'Desafios', 'desc': 'Complete missões semanais', 'icon': 'bolt'},
                             {'href': '#gamificacao', 'label': 'Medalhas', 'desc': 'Colecione marcos da jornada', 'icon': 'medal'}
                         ],
-                        '#gamificacao',
-                        'Ver gamificação completa',
                         'Transforme estudo em hábito com metas e recompensas',
                         '#gamificacao',
                         'Começar a evoluir',
@@ -131,8 +143,6 @@
                             {'href': '#roadmap', 'label': 'Sugestões', 'desc': 'Envie ideias para o laboratório', 'icon': 'help'},
                             {'href': '#roadmap', 'label': 'Programa beta', 'desc': 'Teste funcionalidades antes', 'icon': 'flask'}
                         ],
-                        '#roadmap',
-                        'Ver roadmap completo',
                         'Acompanhe o que vem por aí no ProENEM Lab',
                         '#roadmap',
                         'Ver novidades',
@@ -156,8 +166,6 @@
                             {'href': '#buscar', 'label': 'Por ano', 'desc': 'Provas e questões por edição', 'icon': 'calendar'},
                             {'href': '#buscar', 'label': 'Favoritos', 'desc': 'Acesse o que você salvou', 'icon': 'bookmark'}
                         ],
-                        '#buscar',
-                        'Ver busca completa',
                         'Encontre questões e conteúdos em segundos',
                         '#buscar',
                         'Ir para busca',
@@ -166,7 +174,20 @@
                 </div>
 
             <div class="landing_header_nav_actions" aria-label="Ações rápidas">
-                <a class="landing_header_action_btn landing_header_action_btn_ghost" href="#ajuda">Ajuda</a>
+                <div class="landing_header_nav_dropdown landing_header_nav_actions_dropdown" data-nav-dropdown>
+                    <button
+                        type="button"
+                        class="landing_header_nav_trigger landing_header_nav_actions_dropdown_trigger"
+                        id="nav_trigger_ajuda_mobile"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        aria-controls="nav_menu_ajuda_mobile"
+                    >
+                        Ajuda
+                        <span class="landing_header_nav_caret" aria-hidden="true"></span>
+                    </button>
+                    {{ landing_ajuda_menu('nav_menu_ajuda_mobile', 'nav_trigger_ajuda_mobile') }}
+                </div>
                 <button type="button" class="landing_header_action_btn landing_header_action_btn_primary" data-open-auth-modal data-auth-open-mode="login">
                     Laboratório
                 </button>
@@ -175,21 +196,6 @@
     </header>
 
     <div class="landing_header_nav_backdrop" data-nav-backdrop hidden></div>
-
-    <div id="style_section_toggle_theme_button" role="toolbar" aria-label="Tema da interface">
-        <button type="button" class="toggle_theme_button_input" id="toggle_theme_button_input_light">
-            <img src="{{ url_for('static', filename='assets/images/sun.webp') }}" alt="" width="16" height="16" aria-hidden="true">
-            <span class="visually_hidden">Tema claro</span>
-        </button>
-        <button type="button" class="toggle_theme_button_input" id="toggle_theme_button_input_dark">
-            <img src="{{ url_for('static', filename='assets/images/moon.webp') }}" alt="" width="16" height="16" aria-hidden="true">
-            <span class="visually_hidden">Tema escuro</span>
-        </button>
-        <button type="button" class="toggle_theme_button_input" id="toggle_theme_button_input_system">
-            <img src="{{ url_for('static', filename='assets/images/device.webp') }}" alt="" width="16" height="16" aria-hidden="true">
-            <span class="visually_hidden">Usar tema do dispositivo</span>
-        </button>
-    </div>
 
     <main class="landing_main" id="inicio">
         <!-- Conteúdo da landing virá aqui -->

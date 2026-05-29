@@ -1,6 +1,6 @@
-<div class="auth_modal" data-auth-modal {% if not auth_modal_open %}hidden{% endif %}>
+<div class="auth_modal" data-auth-modal hidden>
     <div class="auth_modal_overlay" data-auth-modal-close aria-hidden="true"></div>
-    <div class="auth_modal_dialog" role="dialog" aria-modal="true" aria-label="Autenticação" data-auth-modal-dialog data-auth-initial-mode="{{ auth_modal_mode or 'login' }}" tabindex="-1">
+    <div class="auth_modal_dialog" role="dialog" aria-modal="true" aria-label="Autenticação" data-auth-modal-dialog data-auth-initial-mode="login" tabindex="-1">
         <div id="auth_form_container" aria-label="Formulário de autenticação">
             <main id="auth_form_main">
             <form novalidate id="auth_form_content" data-auth-form>

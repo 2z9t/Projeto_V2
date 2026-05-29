@@ -15,12 +15,17 @@ Abra `http://127.0.0.1:5000/`.
 
 ## Deploy na Vercel
 
-1. Importe o repositório [ProENEMLab/Projeto_V2](https://github.com/ProENEMLab/Projeto_V2).
-2. Em **Project Settings → Build and Deployment → Root Directory**, defina: `Projeto`.
-3. Framework Preset: **Other** (ou deixe a Vercel detectar Flask via `requirements.txt`).
-4. Deploy.
+**Produção (deploy via CLI):** https://proenem-lab-v2.vercel.app
 
-A Vercel usa `app.py` com a instância `app` (Flask) e Python 3.12 (`.python-version`).
+### Deploy contínuo pelo GitHub
+
+1. Envie o código para [ProENEMLab/Projeto_V2](https://github.com/ProENEMLab/Projeto_V2) (veja abaixo).
+2. Na Vercel: **Add New Project** → importe `ProENEMLab/Projeto_V2`.
+3. **Root Directory:** `Projeto`.
+4. Framework: deixe detectar **Flask** (`requirements.txt` / `pyproject.toml`).
+5. Deploy.
+
+A Vercel usa `app.py` com a instância `app` e Python 3.12 (`.python-version`).
 
 ### Variáveis de ambiente (opcional)
 
